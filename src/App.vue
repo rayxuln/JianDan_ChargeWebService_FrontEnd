@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="title"> 简单的大标题 </div>
+    <FirstPage />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FirstPage from './components/FirstPage.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    FirstPage
   }
 }
 </script>
@@ -24,5 +24,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+#title {
+  font-size: 72px;
 }
 </style>
