@@ -1,4 +1,5 @@
 <template>
+  
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
@@ -27,10 +28,11 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
-    <a-button type="primary">
+    <a-button type="primary" v-on:click="on_button_clicked">
       Hit me you fool!
     </a-button>
   </div>
+  
 </template>
 
 <script>
@@ -41,6 +43,19 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  methods: {
+    on_button_clicked: function() {
+      this.go_back()
+    },
+    go_back: function() {
+      if(window.history.length > 1)
+      {
+        this.$router.go(-1)
+      }else{
+        this.$router.push('/')
+      }
+    }
   }
 }
 </script>
@@ -61,4 +76,6 @@ li {
 a {
   color: #42b983;
 }
+
+
 </style>

@@ -1,17 +1,39 @@
 <template>
-    <div>
-        <a-layout>
+    <div id="frame">
+        <a-row type="flex" justify="center">
+            <a-col :span='20'>
+                <div id="window">
+                    <div id="center-box">
+                    <a-row class="window-row" type="flex" justify="center" align="middle" :gutter="[0,16]">
+                        <a-col :span='9'>
+                            <a-button v-on:click='on_enter_button_clicked'>测试入口</a-button>
+                        </a-col>
+                        <a-col :span='9'>
+                            <a-button>正在建设中...</a-button>
+                        </a-col>
+                    </a-row>
 
-            <a-layout-header>这是头部</a-layout-header>
+                    <a-row class="window-row" type="flex" justify="center" align="middle" :gutter="[0,16]">
+                        <a-col :span='9'>
+                            <a-button>正在建设中...</a-button>
+                        </a-col>
+                        <a-col :span='9'>
+                            <a-button>正在建设中...</a-button>
+                        </a-col>
+                    </a-row>
 
-            <a-layout-content>
-                <div>
-                    <a-button type='primary' v-on:click='on_button_clicked'> 好吧 </a-button>
+                    <a-row class="window-row" type="flex" justify="center" align="middle" :gutter="[0,16]">
+                        <a-col :span='9'>
+                            <a-button>正在建设中...</a-button>
+                        </a-col>
+                        <a-col :span='9'>
+                            <a-button>正在建设中...</a-button>
+                        </a-col>
+                    </a-row>
+                    </div>
                 </div>
-            </a-layout-content>
-
-            <a-layout-footer>这是脚部</a-layout-footer>
-        </a-layout>
+            </a-col>
+        </a-row>
     </div>
 </template>
 
@@ -22,13 +44,23 @@ export default {
     },
     name: "FirstPage",
     methods: {
-        on_button_clicked: function() {
-            alert("How dare you!")
+        on_enter_button_clicked: function() {
+            this.$router.push("/hi")
         }
     }
 }
 </script>
 
 <style scoped>
-
+#window {
+    background-color: white;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E8E8E8;
+    box-shadow: 0px 0px 50px #E8E8E8;
+    padding: 5px;
+    padding-top: 50px;
+    padding-bottom: 15px;
+}
 </style>

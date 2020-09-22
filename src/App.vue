@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <div id="title"> 简单的大标题 </div>
-    <FirstPage />
+    <transition name="slide-fade" mode="out-in">
+    <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-import FirstPage from './components/FirstPage.vue'
-
 export default {
   name: 'App',
   components: {
-    FirstPage
+    
   }
 }
 </script>
@@ -27,5 +27,16 @@ export default {
 }
 #title {
   font-size: 72px;
+}
+
+.slide-fade-enter-active {
+  transition: all .1s ease;
+}
+.slide-fade-leave-active {
+  transition: all .1s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

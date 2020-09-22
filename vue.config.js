@@ -13,7 +13,7 @@ module.exports = {
     port: 3000,
     public: 'mc.raiix.com:8082',
     watchOptions: {
-      ignored: /node_modules/
+      ignored: [/node_modules/, /public/, /dist/, /src/]
     }
   }
 }
