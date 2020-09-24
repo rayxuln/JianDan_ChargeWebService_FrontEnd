@@ -9,7 +9,7 @@
                             <a-button v-on:click='on_enter_button_clicked'>测试入口</a-button>
                         </a-col>
                         <a-col :span='9'>
-                            <a-button>正在建设中...</a-button>
+                            <a-button>正在建设中...{{test1}}</a-button>
                         </a-col>
                     </a-row>
 
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
+
 export default {
     head: {
         title: '简单'
@@ -47,6 +49,9 @@ export default {
         on_enter_button_clicked: function() {
             this.$router.push("/hi")
         }
+    },
+    computed:{
+        ...mapState(['test1'])
     }
 }
 </script>
@@ -62,5 +67,6 @@ export default {
     padding: 5px;
     padding-top: 50px;
     padding-bottom: 15px;
+    margin-bottom: 50px;
 }
 </style>
