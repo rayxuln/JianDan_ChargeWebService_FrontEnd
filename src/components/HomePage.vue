@@ -49,7 +49,10 @@ export default {
         }
     },
     created: function(){
-        this.$router.push({name:this.sider_menu_default_keys[0]})
+        if(this.$route.name !== this.sider_menu_default_keys[0])
+        {
+            this.$router.push({name:this.sider_menu_default_keys[0]})
+        }
     },
     methods: {
         onSiderMenuItemSelected: function(event) {

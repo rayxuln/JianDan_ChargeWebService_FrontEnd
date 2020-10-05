@@ -25,6 +25,7 @@ const routes = [
   },
   { name: "Login", path: "/login", component: LoginPage },
   { name: "Hi", path: "/hi", component: HelloWorld },
+  { path: "/", redirect: "/home"},
   { name: "NotFound", path: "/*", component: NotFound },
 ]
 

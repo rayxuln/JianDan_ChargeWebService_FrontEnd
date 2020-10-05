@@ -14,6 +14,9 @@ export const store = new Vuex.Store({
     mutations: {
         login(state){
             state.login = true
+        },
+        logout(state){
+            state.login = false
         }
     }
 })

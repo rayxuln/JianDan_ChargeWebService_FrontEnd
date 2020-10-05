@@ -7,6 +7,8 @@ import { Input } from 'ant-design-vue';
 import { Icon } from 'ant-design-vue';
 import { Tooltip } from 'ant-design-vue';
 import { Menu } from 'ant-design-vue';
+import { Alert } from 'ant-design-vue';
+import { Empty } from 'ant-design-vue';
 
 Vue.component(Button.name, Button)
 
@@ -28,3 +30,7 @@ Vue.component(Input.Password.name, Input.Password)
 Vue.component(Icon.name, Icon)
 
 Vue.component(Tooltip.name, Tooltip)
+
+Vue.component(Alert.name, Alert)
+
+Vue.component(Empty.name, Empty)
