@@ -21,7 +21,7 @@ export default {
     // convert "2020-9" to "2020/9"
     stringToDate: function(string_date){
         let date = new Date(Date.parse(string_date.replace(/-/g, "/")))
-        console.log(date)
+        // console.log(date)
         return date
     },
     // Input: "2020-9"

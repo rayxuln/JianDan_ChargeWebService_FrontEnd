@@ -91,10 +91,19 @@ export default {
                         position: res.data.info.position
                     }
 
-                    //通过部门号获取部门的名字
+                    //获取员工所在的部门的名字
+                    fetch("/api/get_dept_name?token="+token).then(function(res){res.json().then(function(res){
+                        if(res.code === 0)
+                        {
+                            that.user_info.dept_name = res.data.dept_name
+                            that.has_loaded_info = true
+                        }else if(res.code === -1)
+                        {
+                            util.logoutAndJumpToLoginPage(that)
+                        }
+                    })})
 
-
-                    that.has_loaded_info = true
+                    
                 }else if(res.code === -1)
                 {// invalid token
                     util.logoutAndJumpToLoginPage(that)
