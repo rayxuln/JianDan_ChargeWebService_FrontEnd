@@ -19,6 +19,10 @@
                 <a-icon type="table" />
                 <span> 收费查询 </span>
             </a-menu-item>
+            <a-menu-item id="#logout-menu-item" key="Logout">
+                <a-icon type="logout" />
+                <span> 登出 </span>
+            </a-menu-item>
         </a-menu>
     </a-layout-sider>
 
@@ -37,6 +41,8 @@
 </template>
 
 <script>
+import util from "../util"
+
 export default {
     name: "HomePage",
     head: {
@@ -56,6 +62,15 @@ export default {
     },
     methods: {
         onSiderMenuItemSelected: function(event) {
+            if(event.key === "Logout")
+            {
+                this.$store.commit("logout")
+                let token = util.getCookie("token")
+                fetch("/api/logout?token=" + token)
+                util.deleteCookie("token")
+                this.$router.push({name:"Login"})
+                return
+            }
             this.$router.push({name:event.key})
         }
     }
@@ -63,6 +78,10 @@ export default {
 </script>
 
 <style scoped>
+#logout-menu-item{
+    background-color: red;
+}
+
 #main-layout {
     height: 100%;
     text-align: left;

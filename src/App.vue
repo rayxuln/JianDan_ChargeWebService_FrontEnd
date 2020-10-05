@@ -10,6 +10,7 @@
 <script>
 import { store } from "./store"
 import { mapGetters} from "vuex"
+import util from "./util"
 
 export default {
   name: 'App',
@@ -26,48 +27,39 @@ export default {
     // 检查cookie中是否有token
     var that = this
     
-      let token = that.get_cookie("token")
-      console.log("get old token: " + token)
-      if(token !== "")
-      {
-        setTimeout(function(){
-        // 调用api检查token的合法性
-        fetch("/api/check_token?token="+token).then(function(res){
-          res.json().then(function(res){
-            if(res.code === 0)
+    let token = util.getCookie("token")
+    console.log("get old token: " + token)
+    if(token !== "")
+    {
+      setTimeout(function(){
+      // 调用api检查token的合法性
+      fetch("/api/check_token?token="+token).then(function(res){
+        res.json().then(function(res){
+          if(res.code === 0)
+          {
+            var is_valid = res.data.valid
+            console.log("token valid: " + is_valid)
+            if(is_valid)
             {
-              var is_valid = res.data.valid
-              console.log("token valid: " + is_valid)
-              if(is_valid)
-              {
-                that.$store.commit("login")
-                setTimeout(that.jump_to_home_page, 1000)
-              }else{
-                setTimeout(that.jump_to_login_page, 1000)
-              }
+              that.$store.commit("login")
+              setTimeout(that.jump_to_home_page, 1000)
             }else{
-              console.error("check_token API fail!")
+              setTimeout(that.jump_to_login_page, 1000)
             }
-          })
+          }else{
+            console.error("check_token API fail!")
+          }
         })
-        }, 300)
-      }else{// 若不通过则重新登陆
-        that.jump_to_login_page()
-      }
+      })
+      }, 50)
+    }else{// 若不通过则重新登陆
+      that.jump_to_login_page()
+    }
   },
   computed: {
     ...mapGetters(["hasLogin"])
   },
   methods: {
-    get_cookie: function(cname) {
-      var name = cname + "=";
-      var ca = document.cookie.split(';');
-      for(var i=0; i<ca.length; i++) {
-          var c = ca[i].trim();
-          if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
-      }
-      return "";
-    },
     jump_to_login_page: function() {
       if(this.$route.name !== "Login")
       {

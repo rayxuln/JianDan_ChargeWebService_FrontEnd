@@ -9,6 +9,8 @@ import { Tooltip } from 'ant-design-vue';
 import { Menu } from 'ant-design-vue';
 import { Alert } from 'ant-design-vue';
 import { Empty } from 'ant-design-vue';
+import { Skeleton } from 'ant-design-vue';
+import { Descriptions } from 'ant-design-vue';
 
 Vue.component(Button.name, Button)
 
@@ -34,3 +36,8 @@ Vue.component(Tooltip.name, Tooltip)
 Vue.component(Alert.name, Alert)
 
 Vue.component(Empty.name, Empty)
+
+Vue.component(Skeleton.name, Skeleton)
+
+Vue.component(Descriptions.name, Descriptions)
+Vue.component(Descriptions.Item.name, Descriptions.Item)

@@ -58,6 +58,8 @@
 <script>
 import { mapMutations } from "vuex"
 
+import util from "../util"
+
 export default {
     name: "LoginPage",
     data: function() {
@@ -81,7 +83,7 @@ export default {
             return v !== "" && !(/[^a-z0-9]+/g.test(v))
         },
         validPwd: function(v) {
-            return v !== "" && !(/[^a-z0-9]+/g.test(v))
+            return v !== ""
         },
         onLoginButtonClicked: function() {
             this.show_user_error = false
@@ -105,11 +107,13 @@ export default {
                 res.json().then(function(res){
                     //console.log(res)
                     that.show_fail_too_much_error = false
-                    document.cookie="token="
+                    // document.cookie="token="
+                    util.deleteCookie("token")
                     if(res.code === 0)
                     {// login successfully
                         let token = res.data.token
-                        document.cookie="token="+token
+                        // document.cookie="token="+token
+                        util.setCookie("token", token, 1)
 
                         that.show_user_error = false
                         that.show_pwd_error = false
