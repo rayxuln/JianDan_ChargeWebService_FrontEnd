@@ -47,7 +47,7 @@
 
         <a-row type="flex" justify="center" :gutter="[0,15]">
         <a-col :span='4'>
-        <a-button type="primary" @click="onLoginButtonClicked"> 登陆 </a-button>
+        <a-button type="primary" @click="onLoginButtonClicked" :loading="is_loading"> 登陆 </a-button>
         </a-col>
         </a-row>
     </div>
@@ -71,7 +71,8 @@ export default {
             show_fail_too_much_error: false,
             user_error_msg: '员工号错误！',
             pwd_error_msg: '密码错误！',
-            fail_much_error_msg: ''
+            fail_much_error_msg: '',
+            is_loading: false
         }
     },
     head: {
@@ -103,6 +104,7 @@ export default {
 
             // Call api after the pre-validation
             var that = this
+            that.is_loading = true
             fetch("/api/login?user="+this.user+"&pwd="+this.pwd).then(function(res){
                 res.json().then(function(res){
                     //console.log(res)
@@ -136,7 +138,14 @@ export default {
                         that.show_fail_too_much_error = true
                         that.fail_much_error_msg = res.msg
                     }
+                    that.is_loading = false
+                }).catch(function(error){
+                    that.is_loading = false
+                    util.message.error(error.message)
                 })
+            }).catch(function(error){
+                that.is_loading = false
+                util.message.error(error.message)
             })
         }
     }

@@ -3,7 +3,7 @@ import Vue from 'vue';
 import { Button } from 'ant-design-vue';
 import { Col, Row } from 'ant-design-vue';
 import { Layout } from 'ant-design-vue';
-import { Input } from 'ant-design-vue';
+import { Input, InputNumber } from 'ant-design-vue';
 import { Icon } from 'ant-design-vue';
 import { Tooltip } from 'ant-design-vue';
 import { Menu } from 'ant-design-vue';
@@ -36,6 +36,7 @@ Vue.component(Menu.Item.name, Menu.Item)
 
 Vue.component(Input.name, Input)
 Vue.component(Input.Password.name, Input.Password)
+Vue.component(InputNumber.name, InputNumber)
 
 Vue.component(Icon.name, Icon)
 

@@ -538,8 +538,8 @@ export default {
 
 <style scoped>
 #title {
-  font-size: 24px;
-  text-align: center;
+  font-size: 20px;
+  text-align: left;
   margin-bottom: 10px;
 }
 .ant-table{
