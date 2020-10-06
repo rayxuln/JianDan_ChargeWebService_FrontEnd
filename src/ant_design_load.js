@@ -11,6 +11,8 @@ import { Alert } from 'ant-design-vue';
 import { Empty } from 'ant-design-vue';
 import { Skeleton } from 'ant-design-vue';
 import { Descriptions } from 'ant-design-vue';
+import { Table } from 'ant-design-vue';
+import { Divider } from 'ant-design-vue';
 
 Vue.component(Button.name, Button)
 
@@ -41,3 +43,7 @@ Vue.component(Skeleton.name, Skeleton)
 
 Vue.component(Descriptions.name, Descriptions)
 Vue.component(Descriptions.Item.name, Descriptions.Item)
+
+Vue.component(Table.name, Table)
+
+Vue.component(Divider.name, Divider)

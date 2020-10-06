@@ -70,6 +70,7 @@ export default {
             // console.log(that.$store.state.login)
             if(!that.$store.state.login)
             {
+                util.logoutAndJumpToLoginPage(that)
                 return
             }
 
