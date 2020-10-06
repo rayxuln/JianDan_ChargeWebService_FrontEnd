@@ -18,6 +18,7 @@ import { Modal } from 'ant-design-vue';
 import { FormModel } from 'ant-design-vue';
 import { Radio } from 'ant-design-vue';
 import { DatePicker } from 'ant-design-vue';
+import { Select } from 'ant-design-vue';
 
 Vue.component(Button.name, Button)
 
@@ -63,3 +64,6 @@ Vue.component(Radio.name, Radio)
 Vue.component(Radio.Group.name, Radio.Group)
 
 Vue.component(DatePicker.MonthPicker.name, DatePicker.MonthPicker)
+
+Vue.component(Select.name, Select)
+Vue.component(Select.Option.name, Select.Option)

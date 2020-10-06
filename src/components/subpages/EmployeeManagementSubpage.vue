@@ -33,6 +33,63 @@
             </a-form-model>
         </a-modal>
 
+        <a-modal v-model="add_window_visibility" title="添加员工">
+            <template slot="footer">
+                <div style="text-align: left;">
+                <a-radio-group v-model="add_window_mode" @change="onAddWindowModeChanged">
+                    <a-radio value="new">
+                        添加新员工
+                    </a-radio>
+                    <a-radio value="old">
+                        添加现有员工
+                    </a-radio>
+                </a-radio-group>
+                </div>
+
+                <a-button key="back" @click="onAddWindowCancelButtonClicked"> 取消 </a-button>
+                <a-button key="submit" :loading="add_window_saving" type="primary" @click="onAddWindowAddButtonClicked"> 添加 </a-button>
+            </template>
+
+            <a-form-model ref="add_form" :model="add_window_form" :rules="add_window_rules" :label-col="{span:4}" :wrapper-col="{span:14}">
+                <a-form-model-item v-if="add_window_mode==='old'" label="员工" prop="old_staff_id">
+                    <a-select v-model="add_window_form.old_staff_id" placeholder="请选择一名员工" @change="onAddWindowStaffSelectChanged">
+                        <a-select-option v-for="staff in add_window_old_staffs" :key="staff.staff_id" :value="staff.staff_id">
+                            {{ staff.staff_id }} | {{ staff.name }}
+                        </a-select-option>
+                    </a-select>
+                </a-form-model-item>
+
+                <a-form-model-item v-if="add_window_mode==='new'" label="员工号" prop="new_staff_id">
+                    <a-input v-model="add_window_form.new_staff_id" />
+                </a-form-model-item>
+                <a-form-model-item v-if="add_window_mode==='new'" label="密码" prop="pwd">
+                    <a-input-password v-model="add_window_form.pwd" />
+                </a-form-model-item>
+                <a-form-model-item label="姓名" prop="name">
+                    <a-input :disabled="add_window_mode==='old'" v-model="add_window_form.name" />
+                </a-form-model-item>
+                <a-form-model-item label="性别" prop="gender">
+                    <a-radio-group v-model="add_window_form.gender">
+                        <a-radio :disabled="add_window_mode==='old'" value="男">
+                            男
+                        </a-radio>
+                        <a-radio :disabled="add_window_mode==='old'" value="女">
+                            女
+                        </a-radio>
+                    </a-radio-group>
+                </a-form-model-item>
+                <a-form-model-item label="联系电话" prop="phone">
+                    <a-input :disabled="add_window_mode==='old'" v-model="add_window_form.phone" />
+                </a-form-model-item>
+                <a-form-model-item label="出生年月" prop="birthday">
+                    <a-month-picker :disabled="add_window_mode==='old'" :locale="locale" v-model="add_window_form.birthday" placeholder="请选择出生年月" /> 
+                </a-form-model-item>
+                <a-form-model-item label="住址" prop="address">
+                    <a-input :disabled="add_window_mode==='old'" v-model="add_window_form.address" />
+                </a-form-model-item>
+            </a-form-model>
+        </a-modal>
+
         <div id="title"> 管理员工 </div>
         <a-table :columns="columns" :data-source="data_source" :loading="!has_data_loaded" :scroll="{x:true}">
             <span slot="action" slot-scope="record">
@@ -50,7 +107,7 @@
             </span>
         </a-table>
 
-        <a-button style="margin-top: 15px;"> 添加新员工 </a-button>
+        <a-button style="margin-top: 15px;" @click="onAddStaffButtonClicked"> 添加新员工 </a-button>
         </div>
 
         <div v-if="!is_manager">
@@ -137,6 +194,7 @@ export default {
             has_data_loaded: false,
             is_manager: false,
             error_msg: "加载中...",
+
             edit_window_visibility: false,
             edit_window_title: "编辑员工[]信息",
             edit_window_form: {
@@ -147,7 +205,48 @@ export default {
                 address: "",
             },
             edit_window_saving: false,
+
             add_window_visibility: false,
+            add_window_mode: 'new',
+            add_window_form: {
+                name: "",
+                gender: "",
+                phone: "",
+                birthday: "",
+                address: "",
+                old_staff_id: "",
+                new_staff_id: "",
+                pwd: ""
+            },
+            add_window_saving: false,
+            add_window_rules: {
+                new_staff_id: [
+                    {type: 'string', required: true, message: '请填写员工号', trigger: 'blur'},
+                    {pattern: /^[a-z0-9]+$/, message: '员工号只能是小写字母和数字的组合!', trigger: 'blur'},
+                    {asyncValidator(rule, staff_id, callback){
+                        // 检测员工号是否合法
+                        var token = util.getCookie("token")
+                        fetch("/api/validate_new_staff_id?token="+token+"&staff_id="+staff_id).then(function(res){res.json().then(function(res){
+                            if(res.code === 0)
+                            {
+                                callback()
+                            }else{
+                                callback(new Error(res.msg))
+                            }
+                        })})
+                    }, trigger: 'blur'}
+                ],
+                pwd: [
+                    {type: 'string', required: true, message: '请填写密码', trigger: 'blur'},
+                ],
+                old_staff_id: [
+                    {required: true, message: '请选择一位员工', trigger: 'change'},
+                ],
+            },
+            add_window_old_staffs: [
+                {staff_id:"chaoji113", name:"男武神"},
+                {staff_id:"chaoji114", name:"女武神"},
+            ]
         }
     },
     created: function() {
@@ -313,7 +412,126 @@ export default {
                     }
                 })})
             }, that.$store.state.login ? 0 : 3000)
-        }
+        },
+        onAddStaffButtonClicked(){
+            // 添加员工逻辑
+            // 第一步选择现有员工或者创建新员工
+            // 现有员工页面，直接从未指定部门的员工的列表中选则一个，添加到本部门
+            // 创建新员工页面，填写所有员工信息，包括设定员工号，部门则直接为本部门
+            var that = this
+            var token = util.getCookie("token")
+            //获取所有未指派部门的员工的id和名称
+            fetch("/api/get_all_none_dept_staffs?token="+token).then(function(res){res.json().then(function(res){
+                if(res.code === 0)
+                {
+                    that.add_window_old_staffs = [...res.data.staffs]
+
+                    that.add_window_visibility = true
+                }else if(res.code === -1)
+                {
+                    util.logoutAndJumpToLoginPage(that)
+                }else{
+                    util.message.error(res.msg)
+                }
+            })})
+
+            // that.add_window_visibility = true
+        },
+        onAddWindowCancelButtonClicked(){
+            this.add_window_visibility = false
+        },
+        onAddWindowStaffSelectChanged(staff_id){
+            // 获取选定的员工的信息
+            var that = this
+            var token = util.getCookie("token")
+            fetch("/api/get_staff_info?token="+token+"&staff_id="+staff_id).then(function(res){res.json().then(function(res){
+                if(res.code === 0)
+                {
+                    that.add_window_form.name = res.data.info.name
+                    that.add_window_form.gender = res.data.info.gender
+                    that.add_window_form.birthday = res.data.info.birthday
+                    that.add_window_form.phone = res.data.info.phone
+                    that.add_window_form.address = res.data.info.address
+                }else if(res.code === -1)
+                {
+                    util.logoutAndJumpToLoginPage(that)
+                }else{
+                    util.message.error(res.msg)
+                }
+            })})
+        },
+        onAddWindowAddButtonClicked(){
+            var that = this
+            this.$refs.add_form.validate(valid => {
+                if(valid)
+                {
+                    // 验证通过
+                    that.add_window_saving = true
+                    var token = util.getCookie("token")
+                    if(that.add_window_mode === 'new')
+                    {//添加新员工到本部门
+                        let body_data = {...that.add_window_form}
+                        body_data.birthday = util.dateToString(new Date(body_data.birthday))
+                        fetch(
+                            "/api/add_new_staff?token="+token,
+                            {
+                                method: "POST",
+                                body: JSON.stringify(body_data),
+                                headers: new Headers({
+                                    'content-type': 'application/json;charset=utf-8'
+                                })
+                            }
+                        ).then(function(res){res.json().then(function(res){
+                            if(res.code === 0)
+                            {
+                                util.message.success("添加成功!")
+                                that.add_window_saving = false
+                                that.add_window_visibility = false
+
+                                that.$refs.add_form.resetFields()
+                                that.refreshStaffList()
+                            }else if(res.code === -1)
+                            {
+                                util.logoutAndJumpToLoginPage(that)
+                            }else{
+                                util.message.error(res.msg)
+                                that.edit_window_saving = false
+                            }
+                        })}).catch(function(error){
+                            that.edit_window_saving = false
+                            util.message.error(error.message)
+                        })
+                    }else if(that.add_window_mode === 'old')
+                    {//将指定员工添加到本部门
+                        fetch("/api/change_staff_dept?token="+token+"&staff_id="+that.add_window_form.old_staff_id).then(function(res){res.json().then(function(res){
+                            if(res.code === 0)
+                            {
+                                util.message.success("添加成功!")
+                                that.add_window_saving = false
+                                that.add_window_visibility = false
+
+                                that.$refs.add_form.resetFields()
+                                that.refreshStaffList()
+                            }else if(res.code === -1)
+                            {
+                                util.logoutAndJumpToLoginPage(that)
+                            }else{
+                                util.message.error(res.msg)
+                                that.edit_window_saving = false
+                            }
+                        })}).catch(function(error){
+                            that.edit_window_saving = false
+                            util.message.error(error.message)
+                        })
+                    }
+                }else{
+                    return false
+                }
+            })
+        },
+        onAddWindowModeChanged(){
+            this.$refs.add_form.resetFields()
+        },
     }
 }
 </script>
