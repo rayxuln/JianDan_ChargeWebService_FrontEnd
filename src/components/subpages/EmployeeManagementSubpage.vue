@@ -167,6 +167,37 @@ export default {
                 this.edit_window_form.birthday = record.birthday
                 this.edit_window_form.address = record.address
                 this.edit_window_visibility = true
+            }else if(action === 'delete')
+            {
+                // 删除员工逻辑
+                // 请求api (POST)
+                // 是否成功
+                // 成功则刷新列表
+                // 失败则抛出提示
+                var that = this
+                var token = util.getCookie("token")
+                let body_data = {staff_id:record.staff_id}
+                fetch(
+                    "/api/remove_staff?token="+token,
+                    {
+                        method: "POST",
+                        body: JSON.stringify(body_data),
+                        headers: new Headers({
+                            'content-type': 'application/json;charset=utf-8'
+                        })
+                    }
+                ).then(function(res){res.json().then(function(res){
+                    if(res.code === 0)
+                    {
+                        util.message.success("已将员工["+record.staff_id+"]移出本部门!")
+                        that.refreshStaffList()
+                    }else if(res.code === -1)
+                    {
+                        util.logoutAndJumpToLoginPage(that)
+                    }else{
+                        util.message.error(res.msg)
+                    }
+                })})
             }
         },
         onEditWindowCancelButtonClicked(){
@@ -206,7 +237,7 @@ export default {
                         that.refreshStaffList()
                     }else if(res.code === -1)
                     {
-                        util.logoutAndJumpToLoginPage()
+                        util.logoutAndJumpToLoginPage(that)
                     }else if(res.code === -2)
                     {
                         util.message.error(res.msg)
