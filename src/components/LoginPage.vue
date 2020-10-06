@@ -119,6 +119,7 @@ export default {
                         that.show_pwd_error = false
 
                         that.login()
+                        util.message.success("登陆成功！")
                         that.$router.push({name:"Home"})
                     }else if(res.code === -1)
                     {// wrong user name

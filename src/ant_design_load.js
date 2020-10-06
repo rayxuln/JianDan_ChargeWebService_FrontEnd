@@ -13,6 +13,11 @@ import { Skeleton } from 'ant-design-vue';
 import { Descriptions } from 'ant-design-vue';
 import { Table } from 'ant-design-vue';
 import { Divider } from 'ant-design-vue';
+import { Popconfirm } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue';
+import { FormModel } from 'ant-design-vue';
+import { Radio } from 'ant-design-vue';
+import { DatePicker } from 'ant-design-vue';
 
 Vue.component(Button.name, Button)
 
@@ -47,3 +52,14 @@ Vue.component(Descriptions.Item.name, Descriptions.Item)
 Vue.component(Table.name, Table)
 
 Vue.component(Divider.name, Divider)
+
+Vue.component(Popconfirm.name, Popconfirm)
+
+Vue.component(Modal.name, Modal)
+
+Vue.use(FormModel);
+
+Vue.component(Radio.name, Radio)
+Vue.component(Radio.Group.name, Radio.Group)
+
+Vue.component(DatePicker.MonthPicker.name, DatePicker.MonthPicker)

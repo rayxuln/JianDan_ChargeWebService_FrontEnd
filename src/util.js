@@ -1,6 +1,8 @@
+import { message } from 'ant-design-vue'
 
 
 export default {
+    message,
     getCookie: function(cname) {
         var name = cname + "=";
         var ca = document.cookie.split(';');
@@ -30,7 +32,12 @@ export default {
         let current_date = new Date()
         return parseInt(current_date.getFullYear()) - parseInt(date.getFullYear())
     },
+    // convert date type to "2020-9" type
+    dateToString: function(date){
+        return date.getFullYear() + '-' + (date.getMonth()+1)
+    },
     logoutAndJumpToLoginPage: function(that){
+        this.message.error("您还未登陆，请登陆后再进行操作！")
         that.$store.commit("logout")
         this.deleteCookie("token")
         that.$router.push({name: "Login"})
