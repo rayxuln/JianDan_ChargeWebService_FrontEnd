@@ -19,6 +19,7 @@ import { FormModel } from 'ant-design-vue';
 import { Radio } from 'ant-design-vue';
 import { DatePicker } from 'ant-design-vue';
 import { Select } from 'ant-design-vue';
+import { Collapse } from 'ant-design-vue';
 
 Vue.component(Button.name, Button)
 
@@ -68,3 +69,6 @@ Vue.component(DatePicker.MonthPicker.name, DatePicker.MonthPicker)
 
 Vue.component(Select.name, Select)
 Vue.component(Select.Option.name, Select.Option)
+
+Vue.component(Collapse.name, Collapse)
+Vue.component(Collapse.Panel.name, Collapse.Panel)
