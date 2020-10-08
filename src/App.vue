@@ -28,7 +28,7 @@ export default {
     var that = this
     
     let token = util.getCookie("token")
-    console.log("get old token: " + token)
+    // console.log("get old token: " + token)
     if(token !== "")
     {
       setTimeout(function(){

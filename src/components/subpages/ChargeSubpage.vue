@@ -78,7 +78,7 @@
         </a-button>
 
         <a-button type="primary" style="margin-top: 15px;" @click="onChargeButtonClicked" :loading="is_charging">
-            <a-icon type="dollar" />
+            <a-icon type="dollar" v-if="!is_charging" />
             确认收费
         </a-button>
 
@@ -217,6 +217,8 @@ export default {
                 if(res.code === 0)
                 {
                     that.houses = res.data.houses
+
+                    that.charge_form.house_id = that.houses.length > 0 ? that.houses[0].house_id : -1
                 }else if(res.code === -1)
                 {
                     util.logoutAndJumpToLoginPage(that)

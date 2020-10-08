@@ -105,7 +105,15 @@ export default {
             // Call api after the pre-validation
             var that = this
             that.is_loading = true
-            fetch("/api/login?user="+this.user+"&pwd="+this.pwd).then(function(res){
+            let body_data = {staff_id:this.user, pwd:this.pwd}
+            fetch("/api/login",
+            {
+                method: "POST",
+                body: JSON.stringify(body_data),
+                headers: new Headers({
+                    'content-type': 'application/json;charset=utf-8'
+                })
+            }).then(function(res){
                 res.json().then(function(res){
                     //console.log(res)
                     that.show_fail_too_much_error = false
