@@ -289,8 +289,10 @@ export default {
         onResetButtonClicked(){
             let s = this.charge_form.charge_ym_start
             let e = this.charge_form.charge_ym_end
+            let h = this.charge_form.house_id
 
             this.$refs.charge_form.resetFields()
+            this.charge_form.house_id = h
             this.charge_form.multy_charges = []
             this.charge_form.charge_ym_start = s
             this.charge_form.charge_ym_end = e
