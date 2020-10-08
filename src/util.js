@@ -82,10 +82,13 @@ export default {
             let unit = cnt === -1 ? '元' : unitToChineseUnitMap[cnt%4] //单位
             if(unit === '万' && cnt%8 === 7) unit = unitToChineseUnitMap.yi
     
+            if(unit === '万' && (yuan[i] == 0 && yuan[i-1] == 0 && yuan[i-2] == 0 && yuan[i-3] == 0)) unit = ''
+            if(unit === '亿' && (yuan[i] == 0 && yuan[i-1] == 0 && yuan[i-2] == 0 && yuan[i-3] == 0 && yuan[i-4] == 0 && yuan[i-5] == 0 && yuan[i-6] == 0 && yuan[i-7] == 0)) unit = ''
+    
             if(num === '零'){
                 if(!zero_flag)
                 {
-                    if(cnt%4 !== 3)
+                    if(cnt%4 !== 3 && cnt != -1)
                         res = num + res
                 }
                 zero_flag = true
@@ -101,7 +104,7 @@ export default {
                 }
             }
         }
-
+    
         let tail = ''
     
         if(jiao != '零')
@@ -117,12 +120,17 @@ export default {
         }else{
             tail += '整'
         }
-
+    
+        if(res.length == 0)
+        {
+            res = '零'
+        }
+    
         if(res[res.length-1] !== '元')
         {
             res += '元'
         }
-
+    
         if(jiao === '零' && fen === '零')
         {
             tail = '零角零分'
